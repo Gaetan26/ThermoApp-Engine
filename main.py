@@ -13,3 +13,11 @@ cycle = RankineReheating(
 cycle.resolve()
 
 print(cycle)
+
+
+# cycle = Rankine(
+#     heating=State(P=MPa(8), T=Kelvin(480)),
+#     condensation=State(P=kPa(10))
+# )
+
+# print(cycle)

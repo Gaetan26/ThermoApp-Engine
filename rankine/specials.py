@@ -31,8 +31,42 @@ class RankineReheating(Rankine):
             self.relaxation_LP, 
             self.condensation
         ]
+
+        del self.heating
+        del self.relaxation
         
         self.diagram = self.create_diagram()
+
+    @classmethod
+    def from_diagram(cls, data: dict, verbose=True):
+        try:
+            metadata = data.get("metadata", {})
+            fluid = metadata.get("fluid", "Water")
+            resolved = metadata.get("resolved", False)
+            nature = metadata.get("nature", "ideal")
+
+            states_data = data.get("states", {})
+            states = {k: State.from_dict(v) for k, v in states_data.items()}
+            metrics = data.get("metrics", {})
+
+            if verbose:
+                print(f"[bold cyan]Data successfully loaded from diagram[/bold cyan]")
+
+            return cls(
+                fluid=fluid,
+                pumping=states.get("pumping"),
+                heating_HP=states.get("heating_HP"),
+                heating_LP=states.get("heating_LP"),
+                relaxation_HP=states.get("relaxation_HP"),
+                relaxation_LP=states.get("relaxation_LP"),
+                condensation=states.get("condensation"),
+                **metrics,
+                resolved=resolved,
+                nature=nature,
+            )
+        except Exception as exc:
+            print(f"[bold red]Error: Unable to load data from the diagram[/bold red]")
+            raise exc
 
     def complete_structural_parameters(self):
         if self.pumping.P and not self.condensation.P: 
