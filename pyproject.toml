@@ -5,6 +5,7 @@ description = "Python Program for Thermodynamics Studies"
 requires-python = ">=3.12"
 dependencies = [
     "coolprop>=7.2.0",
+    "customtkinter>=5.2.2",
     "matplotlib>=3.10.9",
     "rich>=15.0.0",
 ]

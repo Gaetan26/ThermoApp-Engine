@@ -194,7 +194,7 @@ class Rankine:
         # ÉTAT 1 : Sortie Condenseur / Entrée Pompe (Liquide saturé)
         self.pumping.H = CP.PropsSI('H', 'P', self.pumping.P, 'Q', 0, fluid)
         self.pumping.S = CP.PropsSI('S', 'P', self.pumping.P, 'Q', 0, fluid)
-        self.pumping.V = 1 / CP.PropsSI('D', 'P', self.pumping.P, 'Q', 0, fluid)
+        self.pumping.V = CP.PropsSI('V', 'P', self.pumping.P, 'Q', 0, fluid)
         self.pumping.T = CP.PropsSI('T', 'P', self.pumping.P, 'Q', 0, fluid)
 
         # ÉTAT 2 : Sortie Pompe / Entrée Chaudière
