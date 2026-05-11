@@ -35,10 +35,30 @@ class RankineReheating(Rankine):
         self.diagram = self.create_diagram()
 
     def complete_structural_parameters(self):
-        if self.pumping.P: self.condensation.P = self.pumping.P
-        elif self.condensation.P: self.pumping.P = self.condensation.P
-        if self.heating_HP.P: self.relaxation_HP.P = self.heating_HP.P
-        if self.heating_LP.P: self.relaxation_LP.P = self.heating_LP.P
+        if self.pumping.P and not self.condensation.P: 
+            self.condensation.P = self.pumping.P
+        elif self.condensation.P and not self.pumping.P: 
+            self.pumping.P = self.condensation.P
+        
+        if self.heating_HP.P and not self.relaxation_HP.P: 
+            self.relaxation_HP.P = self.heating_HP.P
+        elif self.relaxation_HP.P and not self.heating_HP.P:
+            self.heating_HP.P = self.relaxation_HP.P
+
+        if self.heating_LP.P and not self.relaxation_LP.P: 
+            self.relaxation_LP.P = self.heating_LP.P
+        elif self.relaxation_LP.P and not self.heating_LP.P:
+            self.heating_LP.P = self.relaxation_LP.P
+        
+        if self.heating_HP.T and not self.relaxation_HP.T:
+            self.relaxation_HP.T = self.heating_HP.T
+        elif self.relaxation_HP.T and not self.heating_HP.T:
+            self.heating_HP.T = self.relaxation_HP.T
+        
+        if self.heating_LP.T and not self.relaxation_LP.T:
+            self.relaxation_LP.T = self.heating_LP.T
+        elif self.relaxation_LP.T and not self.heating_LP.T:
+            self.heating_LP.T = self.relaxation_LP.T
     
     def check_minimal_data(self):
         critical_vars = {

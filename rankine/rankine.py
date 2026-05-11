@@ -188,33 +188,28 @@ class Rankine:
         elif self.relaxation.P and not self.heating.P:
             self.heating.P = self.relaxation.P
 
+        if self.heating.T and not self.relaxation.T:
+            self.relaxation.T = self.heating.T
+        elif self.relaxation.T and not self.heating.T:
+            self.heating.T = self.relaxation.T
+
     def calculate_state_variables(self):
         fluid = self.fluid
 
-        # ÉTAT 1 : Sortie Condenseur / Entrée Pompe (Liquide saturé)
         self.pumping.H = CP.PropsSI('H', 'P', self.pumping.P, 'Q', 0, fluid)
         self.pumping.S = CP.PropsSI('S', 'P', self.pumping.P, 'Q', 0, fluid)
-        self.pumping.V = CP.PropsSI('V', 'P', self.pumping.P, 'Q', 0, fluid)
+        self.pumping.V = 1 / CP.PropsSI('D', 'P', self.pumping.P, 'Q', 0, fluid)
         self.pumping.T = CP.PropsSI('T', 'P', self.pumping.P, 'Q', 0, fluid)
 
-        # ÉTAT 2 : Sortie Pompe / Entrée Chaudière
         w_pump_ideal = self.pumping.V * (self.heating.P - self.pumping.P)
-        w_pump_real = w_pump_ideal / self.eta_pump # Intégration du rendement pompe
+        w_pump_real = w_pump_ideal / self.eta_pump
         
         self.heating.H = self.pumping.H + w_pump_real
-        self.heating.T = CP.PropsSI('T', 'P', self.heating.P, 'H', self.heating.H, fluid)
         self.heating.S = CP.PropsSI('S', 'P', self.heating.P, 'H', self.heating.H, fluid)
 
-        # ÉTAT 3 : Sortie Chaudière / Entrée Turbine
-        if self.relaxation.T: 
-            self.relaxation.H = CP.PropsSI('H', 'T', self.relaxation.T, 'P', self.relaxation.P, fluid)
-            self.relaxation.S = CP.PropsSI('S', 'T', self.relaxation.T, 'P', self.relaxation.P, fluid)
-        else:
-            self.relaxation.H = CP.PropsSI('H', 'P', self.relaxation.P, 'Q', 1, fluid)
-            self.relaxation.S = CP.PropsSI('S', 'P', self.relaxation.P, 'Q', 1, fluid)
-            self.relaxation.T = CP.PropsSI('T', 'P', self.relaxation.P, 'Q', 1, fluid)
-
-        # ÉTAT 4 : Sortie Turbine / Entrée Condenseur
+        self.relaxation.H = CP.PropsSI('H', 'T', self.relaxation.T, 'P', self.relaxation.P, fluid)
+        self.relaxation.S = CP.PropsSI('S', 'T', self.relaxation.T, 'P', self.relaxation.P, fluid)
+        
         s4_ideal = self.relaxation.S
         h4_ideal = CP.PropsSI('H', 'P', self.condensation.P, 'S', s4_ideal, fluid)
         
