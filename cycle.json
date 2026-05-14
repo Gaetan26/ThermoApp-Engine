@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "fluid": "Water",
+    "resolved": false,
+    "nature": "ideal"
+  },
+  "states": {
+    "pumping": {},
+    "condensation": {
+      "P": 7500.0
+    },
+    "heating_HP": {
+      "T": 763.15,
+      "P": 14000000.0
+    },
+    "relaxation_HP": {},
+    "heating_LP": {
+      "T": 753.15,
+      "P": 3500000.0
+    },
+    "relaxation_LP": {}
+  },
+  "eta_pump": 0.8,
+  "eta_turbine": 0.8,
+  "metrics": {
+    "Qin": null,
+    "Qout": null,
+    "Win": null,
+    "Wout": null,
+    "Wnet": null,
+    "Nth": null
+  }
+}

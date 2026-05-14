@@ -45,6 +45,9 @@ class RankineReheating(Rankine):
             resolved = metadata.get("resolved", False)
             nature = metadata.get("nature", "ideal")
 
+            eta_pump = data.get("eta_pump", 1)
+            eta_turbine = data.get("eta_turbine", 1)
+
             states_data = data.get("states", {})
             states = {k: State.from_dict(v) for k, v in states_data.items()}
             metrics = data.get("metrics", {})
@@ -63,6 +66,8 @@ class RankineReheating(Rankine):
                 **metrics,
                 resolved=resolved,
                 nature=nature,
+                eta_pump=eta_pump,
+                eta_turbine=eta_turbine
             )
         except Exception as exc:
             print(f"[bold red]Error: Unable to load data from the diagram[/bold red]")

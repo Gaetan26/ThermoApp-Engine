@@ -3,21 +3,11 @@ from rankine.rankine import Rankine, State
 from rankine.improvements import Overpressure, Underpressure, Overheating
 from rankine.specials import RankineReheating
 from rankine.conversions import *
+import json
 
-cycle = RankineReheating(
-    heating_HP=State(P=MPa(12), T=Kelvin(520)),
-    heating_LP=State(P=MPa(2), T=Kelvin(500)),
-    condensation=State(P=kPa(8))
-)
-
+cycle = RankineReheating.from_json("cycle.json")
 cycle.resolve()
 
-print(cycle)
-
-
-# cycle = Rankine(
-#     heating=State(P=MPa(8), T=Kelvin(480)),
-#     condensation=State(P=kPa(10))
-# )
+print(json.dumps(cycle.diagram, indent=2))
 
 # print(cycle)
